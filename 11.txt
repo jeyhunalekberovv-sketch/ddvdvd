@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baku Midnight Drop | Аукцион на выживание</title>
+    <style>
+        :root {
+            --bg-color: #0d0d11;
+            --card-bg: #16161f;
+            --accent-color: #ff3b30;
+            --text-main: #ffffff;
+            --text-muted: #8e8e93;
+            --green-pulse: #34c759;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin: 5px 0 0 0;
+        }
+
+        /* Карточка товара */
+        .auction-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #2c2c35;
+        }
+
+        .image-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background: #252530; /* Заглушка если нет фото */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .badge-live {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 30px;
+            text-transform: uppercase;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Контент карточки */
+        .card-content {
+            padding: 20px;
+        }
+
+        .item-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+        }
+
+        .item-info {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        /* Секция ЦЕНЫ */
+        .price-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-box h2 {
+            margin: 0;
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .current-price {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--green-pulse);
+            margin-top: 5px;
+        }
+
+        .timer-box {
+            text-align: right;
+        }
+
+        .timer-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .next-drop-timer {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-top: 5px;
+        }
+
+        /* Кнопка купить */
+        .buy-btn {
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            border: none;
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s;
+            text-transform: uppercase;
+        }
+
+        .buy-btn:active {
+            transform: scale(0.98);
+            background-color: #e5e5ea;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Midnight Drop</h1>
+        <p>Цена падает каждые 20 секунд. Успей забрать первым!</p>
+    </div>
+
+    <!-- Карточка лота -->
+    <div class="auction-card">
+        <div class="image-container">
+            <span class="badge-live">Прямой эфир</span>
+            <!-- Сюда вставляешь ссылку на фото товара с Биня -->
+            <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=500" alt="Товар">
+        </div>
+
+        <div class="card-content">
+            <div class="item-title" id="itemTitle">Premium Oversize Hoodie</div>
+            <div class="item-info" id="itemDesc">Запечатанная фабричная Турция. Плотный хлопок 380г. Идеальный оверсайз крой. Размер: L.</div>
+
+            <div class="price-section">
+                <div class="price-box">
+                    <h2>Текущая цена</h2>
+                    <div class="current-price" id="priceDisplay">120 AZN</div>
+                </div>
+                <div class="timer-box">
+                    <div class="timer-label">Спад цены через</div>
+                    <div class="next-drop-timer" id="timerDisplay">20с</div>
+                </div>
+            </div>
+
+            <button class="buy-btn" onclick="claimItem()">Забрать за <span id="btnPriceDisplay">120 AZN</span></button>
+        </div>
+    </div>
+
+    <script>
+        // --- НАСТРОЙКИ АУКЦИОНА (Их можно менять под каждый товар) ---
+        let startPrice = 120;       // Стартовая цена (AZN)
+        let minPrice = 35;          // Дно цены (ниже опта Биня не опускаем!)
+        let dropAmount = 5;         // На сколько манат падает цена за шаг
+        let stepInterval = 20;      // Интервал спада в секундах
+
+        let currentPrice = startPrice;
+        let timeLeft = stepInterval;
+
+        const priceDisplay = document.getElementById('priceDisplay');
+        const btnPriceDisplay = document.getElementById('btnPriceDisplay');
+        const timerDisplay = document.getElementById('timerDisplay');
+
+        // Логика таймера и падения цены
+        function startAuction() {
+            setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = timeLeft + 'с';
+
+                if (timeLeft <= 0) {
+                    if (currentPrice > minPrice) {
+                        currentPrice -= dropAmount;
+                        // Защита от ухода ниже минималки
+                        if (currentPrice < minPrice) currentPrice = minPrice;
+                        
+                        // Обновляем цены на экране
+                        priceDisplay.textContent = currentPrice + ' AZN';
+                        btnPriceDisplay.textContent = currentPrice + ' AZN';
+                    }
+                    timeLeft = stepInterval; // Сброс таймера на исходную
+                }
+            }, 1000);
+        }
+
+        // Кнопка "ЗАБРАТЬ"
+        function claimItem() {
+            // Сюда можно привязать переход на твой WhatsApp или Telegram-бота
+            let phoneNumber = "99450XXXXXXX"; // Впиши сюда свой номер
+            let message = `Салам! Я забираю лот "${document.getElementById('itemTitle').textContent}" за ${currentPrice} AZN!`;
+            let link = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            alert(`Вы забронировали лот за ${currentPrice} AZN! Перенаправляем для подтверждения...`);
+            window.location.href = link;
+        }
+
+        // Запуск при загрузке страницы
+        startAuction();
+    </script>
+</body>
+</html>
