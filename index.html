@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baku Midnight Drop | Аукцион на выживание</title>
+    <title>Baku Midnight Drop | Аукцион цен</title>
     <style>
         :root {
             --bg-color: #0d0d11;
@@ -12,10 +12,11 @@
             --text-main: #ffffff;
             --text-muted: #8e8e93;
             --green-pulse: #34c759;
+            --admin-bg: #1e1e2a;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
@@ -37,7 +38,6 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 0;
-            color: var(--text-main);
         }
 
         .header p {
@@ -55,13 +55,14 @@
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             border: 1px solid #2c2c35;
+            margin-bottom: 30px;
         }
 
         .image-container {
             position: relative;
             width: 100%;
             height: 300px;
-            background: #252530; /* Заглушка если нет фото */
+            background: #252530;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -84,10 +85,8 @@
             font-weight: bold;
             border-radius: 30px;
             text-transform: uppercase;
-            animation: pulse 1.5s infinite;
         }
 
-        /* Контент карточки */
         .card-content {
             padding: 20px;
         }
@@ -105,7 +104,6 @@
             line-height: 1.4;
         }
 
-        /* Секция ЦЕНЫ */
         .price-section {
             background: rgba(255, 255, 255, 0.03);
             border-radius: 15px;
@@ -117,28 +115,11 @@
             align-items: center;
         }
 
-        .price-box h2 {
-            margin: 0;
-            font-size: 14px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
         .current-price {
-            font-size: 36px;
+            font-size: 34px;
             font-weight: 800;
             color: var(--green-pulse);
             margin-top: 5px;
-        }
-
-        .timer-box {
-            text-align: right;
-        }
-
-        .timer-label {
-            font-size: 12px;
-            color: var(--text-muted);
-            text-transform: uppercase;
         }
 
         .next-drop-timer {
@@ -146,9 +127,9 @@
             font-weight: bold;
             color: var(--accent-color);
             margin-top: 5px;
+            text-align: right;
         }
 
-        /* Кнопка купить */
         .buy-btn {
             background-color: var(--text-main);
             color: var(--bg-color);
@@ -159,104 +140,260 @@
             font-weight: 700;
             border-radius: 12px;
             cursor: pointer;
-            transition: transform 0.1s ease, background-color 0.2s;
             text-transform: uppercase;
         }
 
-        .buy-btn:active {
-            transform: scale(0.98);
-            background-color: #e5e5ea;
+        /* Модальное окно регистрации */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
-        @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
+        .modal-content {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #2c2c35;
         }
+
+        .modal-content h3 { margin-top: 0; font-size: 20px; }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px 0;
+            background: #252532;
+            border: 1px solid #3a3a4a;
+            color: white;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        .submit-btn {
+            background: var(--green-pulse);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        /* Панель администратора */
+        .admin-panel {
+            background: var(--admin-bg);
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px dashed #4a4a5a;
+            box-sizing: border-box;
+        }
+
+        .admin-panel h2 { margin-top: 0; font-size: 18px; color: #ffcc00; text-transform: uppercase;}
     </style>
 </head>
 <body>
 
+    <!-- Главный экран аукциона -->
     <div class="header">
         <h1>Midnight Drop</h1>
-        <p>Цена падает каждые 20 секунд. Успей забрать первым!</p>
+        <p>Успей забрать лот до того, как цена упадет в ноль или его купит кто-то другой!</p>
     </div>
 
-    <!-- Карточка лота -->
     <div class="auction-card">
         <div class="image-container">
-            <span class="badge-live">Прямой эфир</span>
-            <!-- Сюда вставляешь ссылку на фото товара с Биня -->
-            <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=500" alt="Товар">
+            <span class="badge-live">LIVE</span>
+            <img id="itemImage" src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=500" alt="Товар">
         </div>
-
         <div class="card-content">
-            <div class="item-title" id="itemTitle">Premium Oversize Hoodie</div>
-            <div class="item-info" id="itemDesc">Запечатанная фабричная Турция. Плотный хлопок 380г. Идеальный оверсайз крой. Размер: L.</div>
+            <div class="item-title" id="itemTitle">Загрузка товара...</div>
+            <div class="item-info" id="itemDesc">Ожидание настройки менеджером...</div>
 
             <div class="price-section">
-                <div class="price-box">
-                    <h2>Текущая цена</h2>
-                    <div class="current-price" id="priceDisplay">120 AZN</div>
+                <div>
+                    <div style="font-size:12px; color:var(--text-muted); text-transform:uppercase;">Текущая цена</div>
+                    <div class="current-price" id="priceDisplay">0 AZN</div>
                 </div>
-                <div class="timer-box">
-                    <div class="timer-label">Спад цены через</div>
-                    <div class="next-drop-timer" id="timerDisplay">20с</div>
+                <div>
+                    <div style="font-size:12px; color:var(--text-muted); text-transform:uppercase; text-align:right;">Падение через</div>
+                    <div class="next-drop-timer" id="timerDisplay">0с</div>
                 </div>
             </div>
 
-            <button class="buy-btn" onclick="claimItem()">Забрать за <span id="btnPriceDisplay">120 AZN</span></button>
+            <button class="buy-btn" onclick="openRegisterModal()">Купить Шмотку</button>
         </div>
     </div>
 
+    <!-- Модалка регистрации перед покупкой -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <h3>Регистрация покупателя</h3>
+            <p style="color: var(--text-muted); font-size:13px; margin-top:-10px;">Введи свои данные, чтобы зафиксировать цену лота за собой!</p>
+            
+            <label>Твое Имя</label>
+            <input type="text" id="clientName" placeholder="Например: Jeyhun">
+
+            <label>Номер телефона (WhatsApp)</label>
+            <input type="tel" id="clientPhone" placeholder="+994 50 123 45 67" value="+994">
+
+            <button class="submit-btn" onclick="confirmPurchase()">Подтвердить заказ в WhatsApp</button>
+            <button class="buy-btn" style="background:transparent; color:var(--text-muted); font-size:14px; margin-top:10px; padding:5px;" onclick="closeModal('registerModal')">Отмена</button>
+        </div>
+    </div>
+
+    <!-- АДМИН ПАНЕЛЬ -->
+    <div class="admin-panel" id="adminSection">
+        <h2>Управление лотом (Админка)</h2>
+        
+        <label>Ссылка на фото одежды (URL)</label>
+        <input type="text" id="inputImg" value="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=500">
+
+        <label>Название одежды</label>
+        <input type="text" id="inputTitle" value="Premium Oversize Hoodie">
+
+        <label>Описание</label>
+        <textarea id="inputDesc" rows="2">Запечатанная фабричная Турция. Плотный хлопок.</textarea>
+
+        <div style="display: flex; gap: 10px;">
+            <div>
+                <label>Старт цена (AZN)</label>
+                <input type="number" id="inputStartPrice" value="120">
+            </div>
+            <div>
+                <label>Дно цены (AZN)</label>
+                <input type="number" id="inputMinPrice" value="35">
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <div>
+                <label>Шаг спада (AZN)</label>
+                <input type="number" id="inputDrop" value="5">
+            </div>
+            <div>
+                <label>Интервал (сек)</label>
+                <input type="number" id="inputInterval" value="20">
+            </div>
+        </div>
+
+        <label>Твой личный номер WhatsApp (куда придут заказы)</label>
+        <input type="text" id="myWhatsapp" value="994556071700" placeholder="994556071700">
+
+        <button class="submit-btn" style="background:#ffcc00; color:black;" onclick="updateAuctionSettings()">Запустить / Обновить аукцион</button>
+    </div>
+
     <script>
-        // --- НАСТРОЙКИ АУКЦИОНА (Их можно менять под каждый товар) ---
-        let startPrice = 120;       // Стартовая цена (AZN)
-        let minPrice = 35;          // Дно цены (ниже опта Биня не опускаем!)
-        let dropAmount = 5;         // На сколько манат падает цена за шаг
-        let stepInterval = 20;      // Интервал спада в секундах
+        // Переменные системы
+        let currentPrice = 120;
+        let minPrice = 35;
+        let dropAmount = 5;
+        let stepInterval = 20;
+        let timeLeft = 20;
+        let auctionTimer = null;
+        let targetWhatsapp = "994501234567";
 
-        let currentPrice = startPrice;
-        let timeLeft = stepInterval;
+        // Функция обновления параметров админом
+        function updateAuctionSettings() {
+            let pass = prompt("Введите пароль администратора для запуска лота:");
+            if (pass !== "1234") {
+                alert("Неверный пароль!");
+                return;
+            }
 
-        const priceDisplay = document.getElementById('priceDisplay');
-        const btnPriceDisplay = document.getElementById('btnPriceDisplay');
-        const timerDisplay = document.getElementById('timerDisplay');
+            // Считываем значения из полей ввода
+            document.getElementById('itemImage').src = document.getElementById('inputImg').value;
+            document.getElementById('itemTitle').textContent = document.getElementById('inputTitle').value;
+            document.getElementById('itemDesc').textContent = document.getElementById('inputDesc').value;
 
-        // Логика таймера и падения цены
-        function startAuction() {
-            setInterval(() => {
+            currentPrice = parseInt(document.getElementById('inputStartPrice').value);
+            minPrice = parseInt(document.getElementById('inputMinPrice').value);
+            dropAmount = parseInt(document.getElementById('inputDrop').value);
+            stepInterval = parseInt(document.getElementById('inputInterval').value);
+            targetWhatsapp = document.getElementById('myWhatsapp').value;
+            
+            timeLeft = stepInterval;
+
+            // Сброс и перезапуск таймера
+            if (auctionTimer) clearInterval(auctionTimer);
+            
+            document.getElementById('priceDisplay').textContent = currentPrice + ' AZN';
+            document.getElementById('timerDisplay').textContent = timeLeft + 'с';
+            
+            startAuctionEngine();
+            alert("Лот успешно запущен в эфир!");
+        }
+
+        // Движок падения цены
+        function startAuctionEngine() {
+            auctionTimer = setInterval(() => {
                 timeLeft--;
-                timerDisplay.textContent = timeLeft + 'с';
+                document.getElementById('timerDisplay').textContent = timeLeft + 'с';
 
                 if (timeLeft <= 0) {
                     if (currentPrice > minPrice) {
                         currentPrice -= dropAmount;
-                        // Защита от ухода ниже минималки
                         if (currentPrice < minPrice) currentPrice = minPrice;
-                        
-                        // Обновляем цены на экране
-                        priceDisplay.textContent = currentPrice + ' AZN';
-                        btnPriceDisplay.textContent = currentPrice + ' AZN';
+                        document.getElementById('priceDisplay').textContent = currentPrice + ' AZN';
                     }
-                    timeLeft = stepInterval; // Сброс таймера на исходную
+                    timeLeft = stepInterval;
                 }
             }, 1000);
         }
 
-        // Кнопка "ЗАБРАТЬ"
-        function claimItem() {
-            // Сюда можно привязать переход на твой WhatsApp или Telegram-бота
-            let phoneNumber = "994556071700"; // Впиши сюда свой номер
-            let message = `Салам! Я забираю лот "${document.getElementById('itemTitle').textContent}" за ${currentPrice} AZN!`;
-            let link = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        // Модальные окна
+        function openRegisterModal() {
+            document.getElementById('registerModal').style.display = 'flex';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // Финал: отправка заявки владельцу
+        function confirmPurchase() {
+            let name = document.getElementById('clientName').value.trim();
+            let phone = document.getElementById('clientPhone').value.trim();
+            let itemTitle = document.getElementById('itemTitle').textContent;
+
+            if (name === "" || phone === "" || phone === "+994") {
+                alert("Пожалуйста, заполните имя и номер телефона!");
+                return;
+            }
+
+            // Формируем текст заказа
+            let message = `🔥 НОВЫЙ ЗАКАЗ С АУКЦИОНА! 🔥\n\n` +
+                          `📦 Лот: ${itemTitle}\n` +
+                          `💰 Зафиксированная цена: ${currentPrice} AZN\n\n` +
+                          `👤 Покупатель: ${name}\n` +
+                          `📞 Телефон: ${phone}`;
+
+            // Ссылка на твой рабочий WhatsApp
+            let link = `https://wa.me/${targetWhatsapp}?text=${encodeURIComponent(message)}`;
             
-            alert(`Вы забронировали лот за ${currentPrice} AZN! Перенаправляем для подтверждения...`);
+            closeModal('registerModal');
+            // Перенаправляем клиента к тебе в чат
             window.location.href = link;
         }
 
-        // Запуск при загрузке страницы
-        startAuction();
+        // Автостарт при первой загрузке
+        startAuctionEngine();
+        document.getElementById('itemTitle').textContent = document.getElementById('inputTitle').value;
+        document.getElementById('itemDesc').textContent = document.getElementById('inputDesc').value;
+        document.getElementById('priceDisplay').textContent = currentPrice + ' AZN';
     </script>
 </body>
 </html>
