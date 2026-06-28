@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baku Midnight Drop | Аукцион цен</title>
+    <title>Baku Women's Outlet | Женский Маркетплейс</title>
     <style>
         :root {
-            --bg-color: #0d0d11;
-            --card-bg: #16161f;
-            --accent-color: #ff3b30;
-            --text-main: #ffffff;
-            --text-muted: #8e8e93;
-            --green-pulse: #34c759;
-            --admin-bg: #1e1e2a;
+            --bg-color: #faf9f6; /* Элегантный светлый фон для женского бренда */
+            --card-bg: #ffffff;
+            --accent-color: #d4af37; /* Золотой акцент */
+            --text-main: #1a1a1a;
+            --text-muted: #7a7a7a;
+            --btn-color: #111111;
         }
 
         body {
@@ -28,127 +27,132 @@
 
         .header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             width: 100%;
-            max-width: 450px;
+            max-width: 600px;
         }
 
         .header h1 {
-            font-size: 24px;
+            font-size: 28px;
+            font-weight: 300;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             margin: 0;
         }
 
         .header p {
             color: var(--text-muted);
             font-size: 14px;
-            margin: 5px 0 0 0;
+            margin: 8px 0 0 0;
         }
 
-        /* Карточка товара */
-        .auction-card {
-            background-color: var(--card-bg);
-            border-radius: 20px;
+        /* Сетка товаров */
+        .products-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
             width: 100%;
-            max-width: 450px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid #2c2c35;
-            margin-bottom: 30px;
+            max-width: 600px;
         }
 
-        .image-container {
+        @media(min-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr 1fr; /* На планшетах/ноутах по 2 в ряд */
+            }
+        }
+
+        /* Карточка женского товара */
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #eaeaea;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .image-box {
             position: relative;
             width: 100%;
-            height: 300px;
-            background: #252530;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            height: 280px;
+            background: #f0f0f0;
         }
 
-        .image-container img {
+        .image-box img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .badge-live {
+        .badge-new {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            background-color: var(--accent-color);
+            top: 12px;
+            left: 12px;
+            background-color: var(--text-main);
             color: white;
-            padding: 6px 12px;
-            font-size: 12px;
-            font-weight: bold;
-            border-radius: 30px;
+            padding: 4px 10px;
+            font-size: 11px;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .card-content {
-            padding: 20px;
-        }
-
-        .item-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin: 0 0 8px 0;
-        }
-
-        .item-info {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 20px;
-            line-height: 1.4;
-        }
-
-        .price-section {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 15px;
+        .product-info {
             padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 5px 0;
+        }
+
+        .product-desc {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            flex-grow: 1;
+        }
+
+        .price-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: auto;
         }
 
-        .current-price {
-            font-size: 34px;
-            font-weight: 800;
-            color: var(--green-pulse);
-            margin-top: 5px;
-        }
-
-        .next-drop-timer {
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--accent-color);
-            margin-top: 5px;
-            text-align: right;
-        }
-
-        .buy-btn {
-            background-color: var(--text-main);
-            color: var(--bg-color);
-            border: none;
-            width: 100%;
-            padding: 16px;
+        .product-price {
             font-size: 18px;
             font-weight: 700;
-            border-radius: 12px;
+        }
+
+        .order-btn {
+            background-color: var(--btn-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 8px;
             cursor: pointer;
             text-transform: uppercase;
         }
 
-        /* Модальное окно регистрации */
+        /* Модалка оформления заказа */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.6);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -157,30 +161,30 @@
         }
 
         .modal-content {
-            background: var(--card-bg);
+            background: white;
             padding: 25px;
             border-radius: 20px;
             width: 100%;
             max-width: 400px;
-            border: 1px solid #2c2c35;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
-        .modal-content h3 { margin-top: 0; font-size: 20px; }
+        .modal-content h3 { margin-top: 0; font-size: 18px; text-transform: uppercase; }
 
-        input, textarea, select {
+        input, select {
             width: 100%;
             padding: 12px;
-            margin: 10px 0 20px 0;
-            background: #252532;
-            border: 1px solid #3a3a4a;
-            color: white;
+            margin: 8px 0 18px 0;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            color: #111;
             border-radius: 8px;
             box-sizing: border-box;
             font-size: 15px;
         }
 
         .submit-btn {
-            background: var(--green-pulse);
+            background: #25d366; /* Зеленый WhatsApp */
             color: white;
             border: none;
             width: 100%;
@@ -189,211 +193,167 @@
             font-weight: bold;
             border-radius: 10px;
             cursor: pointer;
-            text-transform: uppercase;
         }
 
-        /* Панель администратора */
-        .admin-panel {
-            background: var(--admin-bg);
+        .tg-btn {
+            background: #0088cc; /* Синий Telegram */
+            color: white;
+            border: none;
             width: 100%;
-            max-width: 450px;
-            padding: 20px;
-            border-radius: 20px;
-            border: 1px dashed #4a4a5a;
-            box-sizing: border-box;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
         }
 
-        .admin-panel h2 { margin-top: 0; font-size: 18px; color: #ffcc00; text-transform: uppercase;}
+        .close-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            width: 100%;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Главный экран аукциона -->
     <div class="header">
-        <h1>Midnight Drop</h1>
-        <p>Успей забрать лот до того, как цена упадет в ноль или его купит кто-то другой!</p>
+        <h1>Baku Women's Outlet</h1>
+        <p>Прямые поставки фабричной женской одежды. Доставка по Баку за 2 часа.</p>
     </div>
 
-    <div class="auction-card">
-        <div class="image-container">
-            <span class="badge-live">LIVE</span>
-            <img id="itemImage" src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=500" alt="Товар">
-        </div>
-        <div class="card-content">
-            <div class="item-title" id="itemTitle">Загрузка товара...</div>
-            <div class="item-info" id="itemDesc">Ожидание настройки менеджером...</div>
-
-            <div class="price-section">
-                <div>
-                    <div style="font-size:12px; color:var(--text-muted); text-transform:uppercase;">Текущая цена</div>
-                    <div class="current-price" id="priceDisplay">0 AZN</div>
-                </div>
-                <div>
-                    <div style="font-size:12px; color:var(--text-muted); text-transform:uppercase; text-align:right;">Падение через</div>
-                    <div class="next-drop-timer" id="timerDisplay">0с</div>
+    <!-- Витрина товаров -->
+    <div class="products-grid">
+        
+        <!-- Товар 1 -->
+        <div class="product-card">
+            <div class="image-box">
+                <span class="badge-new">New</span>
+                <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500" alt="Платье">
+            </div>
+            <div class="product-info">
+                <div class="product-title">Летнее Шелковое Платье</div>
+                <div class="product-desc">Премиум шелк, легкий материал. Идеально для бакинских вечеров. Турция.</div>
+                <div class="price-row">
+                    <div class="product-price">55 AZN</div>
+                    <button class="order-btn" onclick="openOrderModal('Летнее Шелковое Платье', '55 AZN')">Заказать</button>
                 </div>
             </div>
-
-            <button class="buy-btn" onclick="openRegisterModal()">Купить Шмотку</button>
         </div>
+
+        <!-- Товар 2 -->
+        <div class="product-card">
+            <div class="image-box">
+                <span class="badge-new">Хит</span>
+                <img src="https://images.unsplash.com/photo-1612336307429-8a898d10e223?w=500" alt="Костюм">
+            </div>
+            <div class="product-info">
+                <div class="product-title">Льняной Костюм-Двойка</div>
+                <div class="product-desc">Натуральный лен (рубашка + брюки). Свободный крой, дышащая ткань.</div>
+                <div class="price-row">
+                    <div class="product-price">65 AZN</div>
+                    <button class="order-btn" onclick="openOrderModal('Льняной Костюм-Двойка', '65 AZN')">Заказать</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Товар 3 -->
+        <div class="product-card">
+            <div class="image-box">
+                <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=500" alt="Юбка">
+            </div>
+            <div class="product-info">
+                <div class="product-title">Плиссированная Юбка Миди</div>
+                <div class="product-desc">Высокая посадка, плотный качественный пояс. Разные расцветки в наличии.</div>
+                <div class="price-row">
+                    <div class="product-price">35 AZN</div>
+                    <button class="order-btn" onclick="openOrderModal('Плиссированная Юбка Миди', '35 AZN')">Заказать</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Модалка регистрации перед покупкой -->
-    <div class="modal" id="registerModal">
+    <!-- Модалка заказа -->
+    <div class="modal" id="orderModal">
         <div class="modal-content">
-            <h3>Регистрация покупателя</h3>
-            <p style="color: var(--text-muted); font-size:13px; margin-top:-10px;">Введи свои данные, чтобы зафиксировать цену лота за собой!</p>
+            <h3 id="modalProductTitle">Оформление заказа</h3>
+            <p style="color: var(--text-muted); font-size:13px; margin-top:-5px;">Выбранный товар: <span id="modalProductPrice" style="font-weight:bold; color:var(--text-main);"></span></p>
             
-            <label>Твое Имя</label>
-            <input type="text" id="clientName" placeholder="Например: Jeyhun">
+            <label>Ваше Имя</label>
+            <input type="text" id="clientName" placeholder="Например: Аян">
 
-            <label>Номер телефона (WhatsApp)</label>
+            <label>Номер телефона</label>
             <input type="tel" id="clientPhone" placeholder="+994 50 123 45 67" value="+994">
 
-            <button class="submit-btn" onclick="confirmPurchase()">Подтвердить заказ в WhatsApp</button>
-            <button class="buy-btn" style="background:transparent; color:var(--text-muted); font-size:14px; margin-top:10px; padding:5px;" onclick="closeModal('registerModal')">Отмена</button>
+            <label>Выберите Размер</label>
+            <select id="clientSize">
+                <option value="S">Размер S</option>
+                <option value="M">Размер M</option>
+                <option value="L">Размер L</option>
+                <option value="XL">Размер XL</option>
+            </select>
+
+            <button class="submit-btn" onclick="sendToWhatsApp()">Заказать через WhatsApp</button>
+            <button class="tg-btn" onclick="sendToTelegramChannel()">Перейти в Telegram-канал</button>
+            <button class="close-btn" onclick="closeModal()">Закрыть</button>
         </div>
-    </div>
-
-    <!-- АДМИН ПАНЕЛЬ -->
-    <div class="admin-panel" id="adminSection">
-        <h2>Управление лотом (Админка)</h2>
-        
-        <label>Ссылка на фото одежды (URL)</label>
-        <input type="text" id="inputImg" value="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=500">
-
-        <label>Название одежды</label>
-        <input type="text" id="inputTitle" value="Premium Oversize Hoodie">
-
-        <label>Описание</label>
-        <textarea id="inputDesc" rows="2">Запечатанная фабричная Турция. Плотный хлопок.</textarea>
-
-        <div style="display: flex; gap: 10px;">
-            <div>
-                <label>Старт цена (AZN)</label>
-                <input type="number" id="inputStartPrice" value="120">
-            </div>
-            <div>
-                <label>Дно цены (AZN)</label>
-                <input type="number" id="inputMinPrice" value="35">
-            </div>
-        </div>
-
-        <div style="display: flex; gap: 10px;">
-            <div>
-                <label>Шаг спада (AZN)</label>
-                <input type="number" id="inputDrop" value="5">
-            </div>
-            <div>
-                <label>Интервал (сек)</label>
-                <input type="number" id="inputInterval" value="20">
-            </div>
-        </div>
-
-        <label>Твой личный номер WhatsApp (куда придут заказы)</label>
-        <input type="text" id="myWhatsapp" value="994556071700" placeholder="994556071700">
-
-        <button class="submit-btn" style="background:#ffcc00; color:black;" onclick="updateAuctionSettings()">Запустить / Обновить аукцион</button>
     </div>
 
     <script>
-        // Переменные системы
-        let currentPrice = 120;
-        let minPrice = 35;
-        let dropAmount = 5;
-        let stepInterval = 20;
-        let timeLeft = 20;
-        let auctionTimer = null;
-        let targetWhatsapp = "994501234567";
+        // --- КОНФИГУРАЦИЯ СВЯЗИ ---
+        const MY_WHATSAPP = "994556071700"; // Впиши сюда свой номер телефона
+        const MY_TELEGRAM_LINK = "https://t.me/твой_канал"; // Впиши сюда ссылку на ваш Telegram-канал
 
-        // Функция обновления параметров админом
-        function updateAuctionSettings() {
-            let pass = prompt("Введите пароль администратора для запуска лота:");
-            if (pass !== "1234") {
-                alert("Неверный пароль!");
-                return;
-            }
+        let selectedProduct = "";
+        let selectedPrice = "";
 
-            // Считываем значения из полей ввода
-            document.getElementById('itemImage').src = document.getElementById('inputImg').value;
-            document.getElementById('itemTitle').textContent = document.getElementById('inputTitle').value;
-            document.getElementById('itemDesc').textContent = document.getElementById('inputDesc').value;
-
-            currentPrice = parseInt(document.getElementById('inputStartPrice').value);
-            minPrice = parseInt(document.getElementById('inputMinPrice').value);
-            dropAmount = parseInt(document.getElementById('inputDrop').value);
-            stepInterval = parseInt(document.getElementById('inputInterval').value);
-            targetWhatsapp = document.getElementById('myWhatsapp').value;
+        // Открытие окна заказа
+        function openOrderModal(title, price) {
+            selectedProduct = title;
+            selectedPrice = price;
             
-            timeLeft = stepInterval;
-
-            // Сброс и перезапуск таймера
-            if (auctionTimer) clearInterval(auctionTimer);
-            
-            document.getElementById('priceDisplay').textContent = currentPrice + ' AZN';
-            document.getElementById('timerDisplay').textContent = timeLeft + 'с';
-            
-            startAuctionEngine();
-            alert("Лот успешно запущен в эфир!");
+            document.getElementById('modalProductTitle').textContent = title;
+            document.getElementById('modalProductPrice').textContent = price;
+            document.getElementById('orderModal').style.display = 'flex';
         }
 
-        // Движок падения цены
-        function startAuctionEngine() {
-            auctionTimer = setInterval(() => {
-                timeLeft--;
-                document.getElementById('timerDisplay').textContent = timeLeft + 'с';
-
-                if (timeLeft <= 0) {
-                    if (currentPrice > minPrice) {
-                        currentPrice -= dropAmount;
-                        if (currentPrice < minPrice) currentPrice = minPrice;
-                        document.getElementById('priceDisplay').textContent = currentPrice + ' AZN';
-                    }
-                    timeLeft = stepInterval;
-                }
-            }, 1000);
+        function closeModal() {
+            document.getElementById('orderModal').style.display = 'none';
         }
 
-        // Модальные окна
-        function openRegisterModal() {
-            document.getElementById('registerModal').style.display = 'flex';
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
-        }
-
-        // Финал: отправка заявки владельцу
-        function confirmPurchase() {
+        // Кнопка 1: Отправка в WhatsApp менеджеру
+        function sendToWhatsApp() {
             let name = document.getElementById('clientName').value.trim();
             let phone = document.getElementById('clientPhone').value.trim();
-            let itemTitle = document.getElementById('itemTitle').textContent;
+            let size = document.getElementById('clientSize').value;
 
-            if (name === "" || phone === "" || phone === "+994") {
-                alert("Пожалуйста, заполните имя и номер телефона!");
+            if(name === "" || phone === "" || phone === "+994") {
+                alert("Пожалуйста, заполните Имя и Номер телефона!");
                 return;
             }
 
-            // Формируем текст заказа
-            let message = `🔥 НОВЫЙ ЗАКАЗ С АУКЦИОНА! 🔥\n\n` +
-                          `📦 Лот: ${itemTitle}\n` +
-                          `💰 Зафиксированная цена: ${currentPrice} AZN\n\n` +
-                          `👤 Покупатель: ${name}\n` +
-                          `📞 Телефон: ${phone}`;
+            let text = `🛍️ НОВЫЙ ЗАКАЗ С ВИТРИНЫ! 🛍️\n\n` +
+                       `👗 Товар: ${selectedProduct}\n` +
+                       `📏 Размер: ${size}\n` +
+                       `💰 Цена: ${selectedPrice}\n\n` +
+                       `👤 Клиентка: ${name}\n` +
+                       `📞 Контакт: ${phone}`;
 
-            // Ссылка на твой рабочий WhatsApp
-            let link = `https://wa.me/${targetWhatsapp}?text=${encodeURIComponent(message)}`;
-            
-            closeModal('registerModal');
-            // Перенаправляем клиента к тебе в чат
-            window.location.href = link;
+            let url = `https://wa.me/${MY_WHATSAPP}?text=${encodeURIComponent(text)}`;
+            window.location.href = url;
         }
 
-        // Автостарт при первой загрузке
-        startAuctionEngine();
-        document.getElementById('itemTitle').textContent = document.getElementById('inputTitle').value;
-        document.getElementById('itemDesc').textContent = document.getElementById('inputDesc').value;
-        document.getElementById('priceDisplay').textContent = currentPrice + ' AZN';
+        // Кнопка 2: Перенаправление в Telegram-канал
+        function sendToTelegramChannel() {
+            // Перед переходом можно зафиксировать в аналитике или просто перенаправить
+            alert("Перенаправляем вас в наш Telegram-канал для просмотра видео-обзоров и связи с админом!");
+            window.location.href = MY_TELEGRAM_LINK;
+        }
     </script>
 </body>
 </html>
